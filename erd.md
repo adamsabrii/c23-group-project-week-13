@@ -1,5 +1,7 @@
 # Entity Relationship Diagram
 
+View this in VSCode by installing the "Markdown Preview Mermaid Support" extension and then opening this file and using the "Open Preview to the Side" option.
+
 ```mermaid
 erDiagram
     categories {
