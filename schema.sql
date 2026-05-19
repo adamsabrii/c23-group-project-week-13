@@ -25,17 +25,20 @@ CREATE TABLE people (
 );
 
 CREATE TABLE expenses (
-    id          INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    person_id   INT NOT NULL REFERENCES people(id) ON DELETE RESTRICT,
-    category_id INT NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
-    amount      NUMERIC(10, 2) NOT NULL,
-    currency    CHAR(3) NOT NULL DEFAULT 'GBP',
-    description TEXT,
-    expense_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
-    approved_at  TIMESTAMPTZ,
-    approver_id INT REFERENCES people(id) ON DELETE SET NULL,
-    approved     BOOLEAN NOT NULL DEFAULT FALSE,
+    id              INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    person_id       INT NOT NULL REFERENCES people(id) ON DELETE RESTRICT,
+    category_id     INT NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
+    amount          NUMERIC(10, 2) NOT NULL,
+    currency        CHAR(3) NOT NULL DEFAULT 'GBP',
+    description     TEXT,
+    expense_date    DATE NOT NULL DEFAULT CURRENT_DATE,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+    approved_at     TIMESTAMPTZ,
+    approver_id     INT REFERENCES people(id) ON DELETE SET NULL,
+    approved        BOOLEAN NOT NULL DEFAULT FALSE,
+    receipt_file_path VARCHAR(500),
+    receipt_file_name VARCHAR(255),
+    receipt_uploaded_at TIMESTAMPTZ,
 
     CONSTRAINT expenses_amount_positive    CHECK (amount > 0),
     CONSTRAINT expenses_amount_max         CHECK (amount <= 9999999.99),
@@ -43,7 +46,12 @@ CREATE TABLE expenses (
     CONSTRAINT expenses_currency_format    CHECK (currency ~ '^[A-Z]{3}$'),
     -- Expense date must not be in the future and not unreasonably old
     CONSTRAINT expenses_date_not_future    CHECK (expense_date <= CURRENT_DATE),
-    CONSTRAINT expenses_date_min           CHECK (expense_date >= '2000-01-01')
+    CONSTRAINT expenses_date_min           CHECK (expense_date >= '2000-01-01'),
+    -- If receipt uploaded, all receipt fields must be populated
+    CONSTRAINT expenses_receipt_complete   CHECK (
+        (receipt_file_path IS NULL AND receipt_file_name IS NULL AND receipt_uploaded_at IS NULL) OR
+        (receipt_file_path IS NOT NULL AND receipt_file_name IS NOT NULL AND receipt_uploaded_at IS NOT NULL)
+    )
 );
 
 CREATE INDEX idx_expenses_person_id   ON expenses(person_id);
