@@ -31,6 +31,8 @@ CREATE TABLE expenses (
     amount          NUMERIC(10, 2) NOT NULL,
     currency        CHAR(3) NOT NULL DEFAULT 'GBP',
     description     TEXT,
+    merchant        VARCHAR(255) NOT NULL,
+    tax             NUMERIC(10, 2) NOT NULL DEFAULT 0,
     expense_date    DATE NOT NULL DEFAULT CURRENT_DATE,
     created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
     approved_at     TIMESTAMPTZ,
