@@ -1,2 +1,5 @@
 *.zip
 *.env
+
+.DS_Store
+SROIE_receipt_images/
