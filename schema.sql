@@ -28,8 +28,9 @@ CREATE TABLE expenses (
     id              INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     person_id       INT NOT NULL REFERENCES people(id) ON DELETE RESTRICT,
     category_id     INT NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
-    amount          NUMERIC(10, 2) NOT NULL,
-    currency        CHAR(3) NOT NULL DEFAULT 'GBP',
+    amount_gpb      NUMERIC(10, 2) NOT NULL,
+    amount_original NUMERIC(10, 2) NOT NULL,
+    currency_original CHAR(3) NOT NULL,
     description     TEXT,
     merchant        VARCHAR(255) NOT NULL,
     tax             NUMERIC(10, 2) NOT NULL DEFAULT 0,
@@ -42,10 +43,10 @@ CREATE TABLE expenses (
     receipt_file_name VARCHAR(255),
     receipt_uploaded_at TIMESTAMPTZ,
 
-    CONSTRAINT expenses_amount_positive    CHECK (amount > 0),
-    CONSTRAINT expenses_amount_max         CHECK (amount <= 9999999.99),
+    CONSTRAINT expenses_amount_gpb_positive    CHECK (amount_gpb > 0),
+    CONSTRAINT expenses_amount_gpb_max         CHECK (amount_gpb <= 9999999.99),
     -- ISO 4217: exactly 3 uppercase letters
-    CONSTRAINT expenses_currency_format    CHECK (currency ~ '^[A-Z]{3}$'),
+    CONSTRAINT expenses_currency_original_format    CHECK (currency_original ~ '^[A-Z]{3}$'),
     -- Expense date must not be in the future and not unreasonably old
     CONSTRAINT expenses_date_not_future    CHECK (expense_date <= CURRENT_DATE),
     CONSTRAINT expenses_date_min           CHECK (expense_date >= '2000-01-01'),
