@@ -7,7 +7,7 @@ erDiagram
     categories {
         INT id PK
         VARCHAR name UK "NOT NULL, UNIQUE"
-        TEXT description"
+        TEXT description
         TIMESTAMPTZ created_at "NOT NULL, DEFAULT now()"
     }
 
@@ -26,10 +26,10 @@ erDiagram
         NUMERIC amount_gbp "NOT NULL, > 0"
         NUMERIC amount_original "NOT NULL, > 0"
         CHAR currency_original "NOT NULL, DEFAULT 'GBP'"
-        TEXT description"
-        VARCHAR merchant NOT NULL"
-        NUMERIC tax_gbp NOT NULL, DEFAULT 0"
-        NUMERIC tax_original NOT NULL, DEFAULT 0"
+        TEXT description
+        VARCHAR merchant "NOT NULL"
+        NUMERIC tax_gbp "NOT NULL, DEFAULT 0"
+        NUMERIC tax_original "NOT NULL, DEFAULT 0"
         DATE expense_date "NOT NULL, DEFAULT CURRENT_DATE"
         TIMESTAMPTZ created_at "NOT NULL, DEFAULT now()"
         TIMESTAMPTZ approved_at
