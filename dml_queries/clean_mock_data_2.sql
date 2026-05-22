@@ -1,0 +1,1 @@
+UPDATE TABLE expenses SET person_id = 18 WHERE person_id = 5;

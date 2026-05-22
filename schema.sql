@@ -28,7 +28,7 @@ CREATE TABLE expenses (
     id              INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     person_id       INT NOT NULL REFERENCES people(id) ON DELETE RESTRICT,
     category_id     INT NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
-    amount_gpb      NUMERIC(10, 2) NOT NULL,
+    amount_gbp      NUMERIC(10, 2) NOT NULL,
     amount_original NUMERIC(10, 2) NOT NULL,
     currency_original CHAR(3) NOT NULL,
     description     TEXT,

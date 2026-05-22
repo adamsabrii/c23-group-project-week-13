@@ -1,0 +1,1 @@
+UPDATE expenses SET approved = TRUE WHERE amount_gbp < 40 AND approver_id = 5;
